@@ -1,16 +1,31 @@
-package hello;
+package bookstore.model;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "books")
 public class Book {
 
-    private long id;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
     private String title;
     private String author;
     private double price;
     private ArrayList<String> comments;
 
-    public Book(long id, String title, String author, double price) {
+    public Book() {
+        this.comments = new ArrayList<String>();
+    }
+
+    public Book(Long id, String title, String author, double price) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -50,7 +65,7 @@ public class Book {
 		this.comments.add(comment);
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
