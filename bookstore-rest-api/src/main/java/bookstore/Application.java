@@ -1,5 +1,7 @@
 package bookstore;
 
+import java.awt.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +22,9 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		bookRepository.save(new Book(null, "Harry Potter and the Philosopher's Stone", "J. K. Rowling", 9.9));
+		Book book1 = new Book(null, "Harry Potter and the Philosopher's Stone", "J. K. Rowling", 9.9);
+		book1.addComment("This book is great, love it!");
+		bookRepository.save(book1);
+		bookRepository.save(new Book(null, "Harry Potter and the Chamber of Secrets", "J. K. Rowling", 14.9));
 	}
 }

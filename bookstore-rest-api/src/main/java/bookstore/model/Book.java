@@ -61,7 +61,11 @@ public class Book {
 		return comments;
 	}
 
-	public void addComments(String comment) {
+	public void setComments(ArrayList<String> comments) {
+		this.comments = comments;
+	}
+
+	public void addComment(String comment) {
 		this.comments.add(comment);
 	}
 
