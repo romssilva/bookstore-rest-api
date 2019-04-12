@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import bookstore.model.Book;
 
-public interface BooksRepository extends CrudRepository<Book, Long> {
+public interface BookRepository extends CrudRepository<Book, Long> {
 
 	@Query("FROM Book b WHERE UPPER(b.title) LIKE CONCAT('%',UPPER(:title),'%') and UPPER(b.author) LIKE CONCAT('%',UPPER(:author),'%') and b.price > :minPrice and b.price < :maxPrice")
 	public List<Book> filterAll(String title, String author, Double minPrice, Double maxPrice);

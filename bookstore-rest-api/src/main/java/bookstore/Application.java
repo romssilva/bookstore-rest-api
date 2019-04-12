@@ -1,20 +1,18 @@
 package bookstore;
 
-import java.awt.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import bookstore.model.Book;
-import bookstore.repository.BooksRepository;
+import bookstore.repository.BookRepository;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 	
 	@Autowired
-	BooksRepository bookRepository;
+	BookRepository bookRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

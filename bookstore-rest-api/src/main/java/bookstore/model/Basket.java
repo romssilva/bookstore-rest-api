@@ -2,17 +2,21 @@ package bookstore.model;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "baskets")
 public class Basket {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-    private ArrayList<BookInBasket> booksInBasket;
+    private ArrayList<BookItem> booksInBasket;
 
     public Basket() {}
 
@@ -20,25 +24,15 @@ public class Basket {
 		return id;
 	}
 
-	public ArrayList<BookInBasket> getBooksInBasket() {
+	public ArrayList<BookItem> getBooksInBasket() {
 		return booksInBasket;
 	}
 
-	public void setBooksInBasket(ArrayList<BookInBasket> booksInBasket) {
+	public void setBooksInBasket(ArrayList<BookItem> booksInBasket) {
 		this.booksInBasket = booksInBasket;
 	}
 
-	public void addBooksToBasket(BookInBasket bookInBasket) {
+	public void addBooksToBasket(BookItem bookInBasket) {
 		this.booksInBasket.add(bookInBasket);
-	}
-	
-	public double getBasketTotal() {
-		double basketTotal = 0;
-		
-		for (int i = 0; i < this.booksInBasket.size(); i++) {
-			basketTotal += this.booksInBasket.get(i).getBook().getPrice();
-		}
-		
-		return basketTotal;
 	}
 }
