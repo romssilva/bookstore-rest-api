@@ -20,9 +20,10 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Book book1 = new Book(null, "Harry Potter and the Philosopher's Stone", "J. K. Rowling", 9.9);
-		book1.addComment("This book is great, love it!");
-		bookRepository.save(book1);
+		Book book = new Book(null, "Harry Potter and the Philosopher's Stone", "J. K. Rowling", 9.9);
+		book.addComment("This book is great, love it!");
+		
+		bookRepository.save(book);
 		bookRepository.save(new Book(null, "Harry Potter and the Chamber of Secrets", "J. K. Rowling", 14.9));
 	}
 }

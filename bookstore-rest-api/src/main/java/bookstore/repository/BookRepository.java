@@ -1,19 +1,12 @@
 package bookstore.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import bookstore.model.Book;
 
-public interface BookRepository extends CrudRepository<Book, Long> {
-
-	@Query("FROM Book b WHERE UPPER(b.title) LIKE CONCAT('%',UPPER(:title),'%') and UPPER(b.author) LIKE CONCAT('%',UPPER(:author),'%') and b.price > :minPrice and b.price < :maxPrice")
-	public List<Book> filterAll(String title, String author, Double minPrice, Double maxPrice);
+public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 	
-	@Query(nativeQuery = true, value = "SELECT Top 1 * FROM Book ORDER BY price DESC")
-	public Book findMostExpensive();
-	
-	
+	public Page<Book> findByTitleContainingAndAuthorContainingAllIgnoreCase(String title, String author, Pageable pageable);
 }

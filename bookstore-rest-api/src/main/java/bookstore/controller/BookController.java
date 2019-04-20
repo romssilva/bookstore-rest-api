@@ -1,12 +1,13 @@
 package bookstore.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,19 +25,21 @@ public class BookController {
 	
 	@Autowired
 	BookRepository bookRepository;
+	
+	private final String API_VERSION = "/v1";
 
-	@GetMapping("/books")
-    public List<Book> getAllBooks(@RequestParam(value="title", required=false) String title, @RequestParam(value="author", required=false) String author, @RequestParam(value="minPrice", required=false) Double minPrice, @RequestParam(value="maxPrice", required=false) Double maxPrice) {
-
-		if (title == null) title = "";
-		if (author == null) author = "";
-		if (minPrice == null) minPrice = (double) 0;
-		if (maxPrice == null) maxPrice = (double) 1000;
+	@GetMapping(API_VERSION + "/books")
+    public Page<Book> getAllBooks(
+    		@RequestParam(value="title", required=false, defaultValue="") String title,
+    		@RequestParam(value="author", required=false, defaultValue="") String author,
+    		@RequestParam(value="pageNumber", required=false, defaultValue="0") int pageNumber,
+    		@RequestParam(value="pageSize", required=false, defaultValue="10") int pageSize
+		) {
 		
-		return (List<Book>) bookRepository.filterAll(title, author, minPrice, maxPrice);
+		return bookRepository.findByTitleContainingAndAuthorContainingAllIgnoreCase(title, author, PageRequest.of(pageNumber, pageSize));
     }
 	
-    @GetMapping("/books/{id}")
+    @GetMapping(API_VERSION + "/books/{id}")
     public Book getBook(HttpServletResponse response, @PathVariable Long id) {
     	Optional<Book> bookOptional = bookRepository.findById(id);
     	if (bookOptional.isPresent()) {
@@ -47,9 +50,11 @@ public class BookController {
     	}
     }
 
-    @PostMapping("/books")
-    public Book addBook(@RequestBody Book newBook) {
-    	return bookRepository.save(newBook);
+    @PostMapping(API_VERSION + "/books")
+    public Book addBook(@RequestBody Book newBook, HttpServletResponse response) {
+		Book book = bookRepository.save(newBook);
+		response.setStatus(HttpServletResponse.SC_CREATED);
+    	return book;
     }
     
     @PutMapping("books/{id}")
@@ -78,7 +83,7 @@ public class BookController {
     	bookRepository.save(book);
 	}
     
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping(API_VERSION + "/books/{id}")
     public void deleteBook(@PathVariable Long id) {
     	Book book = bookRepository.findById(id).get();
     	bookRepository.delete(book);
